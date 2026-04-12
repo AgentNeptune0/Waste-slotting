@@ -12,7 +12,7 @@ HEIGHT = 700
 message ="Slot the waste into the corrects bins"
 final_level = 5
 start_speed = 7
-game_over = False
+game_over = True
 game_complete = False
 current_level = 1
 ITEMS = [("banana_peel","3"),("battery_waste","2"),("broken_ceramics","4"),("eggshells","3"),("pizza_box","4"),("plastic_bottle","1"),("soda_can","1"),("syringe","2")]
@@ -31,12 +31,29 @@ general_waste.pos = (850,600)
 bins = {"1":recycle_bin,"2":hazardous_waste_bin,"3":organic_food_bin,"4":general_waste}
 
 
-def trash_items():
-    for i in range(current_level+1):
-        random_number = random.randint(1,8)
-        random_image = ITEMS[random.number][0]
-        waste = Actor(random_image)
+def create_trash_items():
+    #removing old trash items
+    items.clear() 
 
+    for i in range(current_level+1):
+        #randomly picking trash item images from ITEMS
+        image,bin_number = random.choice(ITEMS)
+        print(image)
+        waste = Actor(image)
+
+        #Setting a random x axis position
+        waste.x = random.randint(100,900)
+
+        #Setting y axis from the top of the window
+        waste.y = 0
+        
+        #Storing correct bin number for the actor 
+        waste.correct_bin = bin_number
+
+        #Adding waste to the items list
+        items.append(waste)
+
+create_trash_items()
 
 def draw():
     screen.fill("light blue")
@@ -44,6 +61,12 @@ def draw():
     hazardous_waste_bin.draw()
     organic_food_bin.draw()
     general_waste.draw()
+    if game_over == True:
+        screen.draw.text("Game Over,You Lose!",center = (WIDTH//2,HEIGHT//2),fontsize=56,color="red") 
+    elif game_complete == True:
+        screen.draw.text("Congratulations,you win!",center = (WIDTH//2,HEIGHT//2))
+
+ 
 
 
 pgzrun.go()
