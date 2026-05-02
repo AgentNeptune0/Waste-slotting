@@ -89,7 +89,7 @@ def update():
             game_over = True
 
 def on_mouse_down(pos):
-    global current_level,game_over,game_complete
+    global current_level,game_over,game_complete,start_speed
     if game_complete == True or game_over == True:
         return
     if len(items) == 0:
@@ -99,9 +99,27 @@ def on_mouse_down(pos):
     first_item = items[0]
     
     for key,bin_Actor in bins.items():
+        #Checking for the correct bin
         if bin_Actor.collidepoint(pos):
+            #if correct bin clicked
+            if key == first_item.correct_bin:
+                items.pop(0)
+                if len(items) == 0:
+                    current_level = current_level + 1
+                    #start_speed = start_speed + 1
+                    if current_level >= final_level:
+                        game_complete == True
+                    else:
+                        create_trash_items()
+            else:
+                #This block is used when you click the wrong bin
+                game_over == True
 
-            #Checking for the correct bin
+                    
+
+               
+
+            
             
 
 
